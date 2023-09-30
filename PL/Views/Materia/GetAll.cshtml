@@ -1,0 +1,53 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+@Scripts.Render("~/bundles/jquery")
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+<h2 class="text-center">Materias</h2>
+<hr />
+<a class="btn btn-success" href="@Url.Action("Form","Materia", new {idMateria = Model.IdMateria})"><i class="fa-solid fa-book"></i>  Agregar</a>
+<hr />
+<div class="text-center">
+    @if (Model.Materias != null)
+    {
+        <table class="table table-dark table-hover" id="myTable">
+            <thead>
+                <tr>
+                    <th class="text-center">Editar</th>
+                    <th class="text-center">IdMateria</th>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Costo</th>
+                    <th class="text-center">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Materia materia in Model.Materias)
+                {
+                    <tr>
+                        <td><a class="btn btn-success" href="@Url.Action("Form", "Materia", new {idMateria = materia.IdMateria})"><i class="fa-solid fa-file-pen"></i></a></td>
+                        <td>@materia.IdMateria</td>
+                        <td>@materia.Nombre</td>
+                        <td>$ @materia.Costo</td>
+                        <td><a class="btn btn-danger" href="@Url.Action("Delete","Materia",new {idMateria = materia.IdMateria})" onclick="return confirm('¿Seguro que quieres elimar?')"><i class="fa-solid fa-eraser"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script type="text/javascript">
+    let table = new DataTable('#myTable', {
+        reponsive: true,
+        "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "Todos"]],
+        searching: false,
+        language: {
+            url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+        },
+    });
+</script>

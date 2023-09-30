@@ -1,0 +1,72 @@
+﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetMateriasNoAsignadas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="text-center">Materias no asignadas</h4>
+<br />
+<h2 class="text-center">@Model.Alumno.Nombre</h2>
+<hr />
+<hr />
+<div class="text-center">
+    @if (Model.Materia.Materias != null)
+    {
+        if (Model.Materia.Materias.Count > 0)
+        {
+            <form method="post" action="@Url.Action("AgregarMaterias", "AsignarMateria", new {idAlumno = Model.Alumno.IdAlumno})">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Asignatura</th>
+                            <th>Costo</th>
+                            <th>Asignar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ML.AlumnoMateria materia in Model.Materia.Materias)
+                        {
+                            <tr>
+                                <td>@materia.Materia.Nombre</td>
+                                <td>$ @materia.Materia.Costo</td>
+                                <td>
+                                    <input name="idMaterias[]" class="form-check-input" type="checkbox" value="@materia.Materia.IdMateria" onchange="Sumar(@materia.Materia.Costo,this)">
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th><label id="lblSuma">0</label></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div>
+                    <button class="btn btn-success" type="submit">Agregar</button>
+                    <a class="btn btn-danger" href="@Url.Action("GetMateriasAsignadas", "AsignarMateria", new {idAlumno = Model.Alumno.IdAlumno,nombre = Model.Alumno.Nombre})">Volver</a>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-warning" role="alert">Sin materias en la base de datos :(</div>
+        }
+    }
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    function Sumar(costo, checkbox) {
+        var sumaActual = parseFloat($('#lblSuma').text().replace('$', '')) || 0;
+
+        if (checkbox.checked) {
+            sumaActual += parseFloat(costo);
+        } else {
+            sumaActual -= parseFloat(costo);
+        }
+
+        // Actualizar el contenido de la etiqueta lblSuma
+        $('#lblSuma').text('$ ' + sumaActual.toFixed(2)); // Se redondea a 2 decimales
+    }
+</script>

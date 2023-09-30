@@ -1,0 +1,52 @@
+﻿@model ML.Alumno
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Formulario</h2>
+<hr />
+<div onpaste="return false">
+    @using (Html.BeginForm("Form", "Alumno", FormMethod.Post, new { enctype = "mulpart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.IdAlumno)
+        <div class="row mb-3">
+            <div class="col col-4">
+                @Html.LabelFor(model => model.Nombre)
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @onkeypress= "return lettersOnly(event,'lblNombre')" })
+                <label id="lblNombre"></label>
+            </div>
+            <div class="col col-4">
+                @Html.LabelFor(model => model.ApellidoPaterno)
+                @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @onkeypress = "return lettersOnly(event,'lblApellidoPaterno')" })
+                <label id="lblApellidoPaterno"></label>
+            </div>
+            <div class="col col-4">
+                @Html.LabelFor(model => model.ApellidoMaterno)
+                @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @onkeypress = "return lettersOnly(event,'lblApellidoMaterno')" })
+                <label id="lblApellidoMaterno"></label>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-success" type="submit"><i class="fa-solid fa-floppy-disk"></i>  Guardar</button>
+            <a class="btn btn-danger" href="@Url.Action("GetAll", "Alumno")"><i class="fa-solid fa-arrow-rotate-left"></i>  Volver</a>
+        </div>
+    }
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    function lettersOnly(e, lbl) {
+        var charCode = e.keyCode;
+        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8 || charCode == 32) {
+            $('#' + lbl).text("");
+            $('#' + lbl).css('border-color', 'green');
+            return true;
+        }
+        else {
+            $('#' + lbl).text("Sólo se admiten letras.");
+            $('#' + lbl).css('color', 'red');
+            $('#' + lbl).css('border-color', 'red');
+            return false;
+        }
+    }
+</script>

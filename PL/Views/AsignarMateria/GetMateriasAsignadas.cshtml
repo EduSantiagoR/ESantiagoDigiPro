@@ -1,0 +1,45 @@
+﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetMateriasAsignadas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="text-center">Materias asignadas del alumno</h4>
+<br />
+<h2 class="text-center">@Model.Alumno.Nombre</h2>
+<hr />
+<a class="btn btn-success" href="@Url.Action("GetMateriasNoAsignadas", "AsignarMateria", new {idAlumno = Model.Alumno.IdAlumno})">Agregar materia</a>
+<a class="btn btn-danger" href="@Url.Action("AsignarMateria","AsignarMateria")">Volver</a>
+<hr />
+<div class="text-center">
+    @if (Model.Materia.Materias != null)
+    {
+        if (Model.Materia.Materias.Count > 0)
+        {
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>Asignatura</th>
+                        <th>Costo</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ML.AlumnoMateria materia in Model.Materia.Materias)
+                    {
+                        <tr>
+                            <td>@materia.Materia.Nombre</td>
+                            <td>$ @materia.Materia.Costo</td>
+                            <td><a class="btn btn-danger" href="@Url.Action("Delete", "AsignarMateria", new {idAlumno = Model.Alumno.IdAlumno,idMateria = materia.Materia.IdMateria})" onclick="return confirm('¿Seguro que quieres eliminar?')"><i class="fa-solid fa-trash-can"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning" role="alert">¡Vaya! Parece que no tienes materias asignadas.</div>
+        }
+    }
+
+</div>
